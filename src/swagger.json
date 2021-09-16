@@ -1,0 +1,265 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Atlas",
+    "description": "This is the Atlas API doc",
+    "version": "1.0.0",
+    "contact": {
+      "email": "hugolacerdar@gmail.com"
+    }
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Creates a user",
+        "description": "Creates a new user given a valid email",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "Nicolas Cage",
+                  "email": "nicolas_cagezinho@example.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Invalid email"
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "summary": "Lists all users",
+        "description": "Lists all users only if the user requesting is an admin",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "header",
+            "description": "ID of the requesting user",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "admin": {
+                        "type": "boolean"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "id": "c48d623d-c67b-4150-bd82-6a0a6175ed6c",
+                    "admin": true,
+                    "name": "Nicolas Cage",
+                    "email": "nicolas_cagezinho@example.com",
+                    "created_at": "2021-09-16T15:05:48.345Z",
+                    "updated_at": "2021-09-16T15:05:48.345Z"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Only admins can list all users"
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "Upgrades a user to admin",
+        "decription": "Upgrades a user to admin given the user id in the path params",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "type": "string",
+            "format": "uuid",
+            "require": true,
+            "description": "UUID of the user to upgrade to admin"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "c48d623d-c67b-4150-bd82-6a0a6175ed6c",
+                  "admin": true,
+                  "name": "Nicolas Cage",
+                  "email": "nicolas_cagezinho@example.com",
+                  "created_at": "2021-09-16T15:05:48.345Z",
+                  "updated_at": "2021-09-16T15:05:48.345Z"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "contente": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "User doesn't exists"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Returns a user",
+        "decription": "Returns a user given the id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "type": "string",
+            "format": "uuid",
+            "require": true,
+            "description": "UUID of the user to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "c48d623d-c67b-4150-bd82-6a0a6175ed6c",
+                  "admin": true,
+                  "name": "Nicolas Cage",
+                  "email": "nicolas_cagezinho@example.com",
+                  "created_at": "2021-09-16T15:05:48.345Z",
+                  "updated_at": "2021-09-16T15:05:48.345Z"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "contente": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "User doesn't exists"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
